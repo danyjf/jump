@@ -19,6 +19,9 @@ class Right(Command):
 class InputHandler:
     def __init__(self):
         self.command = {
+            'w': Up(),
+            'a': Left(),
+            'd': Right(),
             'up': Up(),
             'left': Left(),
             'right': Right()

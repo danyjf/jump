@@ -12,8 +12,9 @@ class Game:
         self.input_handler = InputHandler()
         self.delta_time = 0
         
-        self.player = Player()
-        self.entities = [self.player]
+        self.player1 = Player(100, 0, 'red')
+        self.player2 = Player(892, 0, 'green')
+        self.entities = [self.player1, self.player2]
     
     def loop(self):
         while self.running:
@@ -30,15 +31,26 @@ class Game:
 
     def process_input(self):
         keys = pygame.key.get_pressed()
+        
+        if keys[pygame.K_w]:
+            command = self.input_handler.handle_input('w')
+            command.execute(self.player1)
+        if keys[pygame.K_a]:
+            command = self.input_handler.handle_input('a')
+            command.execute(self.player1)
+        if keys[pygame.K_d]:
+            command = self.input_handler.handle_input('d')
+            command.execute(self.player1)
+        
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')
-            command.execute(self.player)
+            command.execute(self.player2)
         if keys[pygame.K_LEFT]:
             command = self.input_handler.handle_input('left')
-            command.execute(self.player)
+            command.execute(self.player2)
         if keys[pygame.K_RIGHT]:
             command = self.input_handler.handle_input('right')
-            command.execute(self.player)
+            command.execute(self.player2)
     
     def update(self):
         for entity in self.entities:
