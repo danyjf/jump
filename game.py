@@ -33,9 +33,6 @@ class Game:
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')
             command.execute(self.player)
-        elif keys[pygame.K_DOWN]:
-            command = self.input_handler.handle_input('down')
-            command.execute(self.player)
         elif keys[pygame.K_LEFT]:
             command = self.input_handler.handle_input('left')
             command.execute(self.player)

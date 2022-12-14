@@ -8,10 +8,6 @@ class Up(Command):
     def execute(self, entity):
         entity.up()
 
-class Down(Command):
-    def execute(self, entity):
-        entity.down()
-
 class Left(Command):
     def execute(self, entity):
         entity.left()
@@ -24,7 +20,6 @@ class InputHandler:
     def __init__(self):
         self.command = {
             'up': Up(),
-            'down': Down(),
             'left': Left(),
             'right': Right()
         }
