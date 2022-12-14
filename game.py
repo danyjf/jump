@@ -1,6 +1,7 @@
 ﻿import pygame
 
 from player import Player
+from input_handler import InputHandler
 
 class Game:
     def __init__(self, width, height):
@@ -8,15 +9,19 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.running = True
-        self.entities = [Player()]
+        self.input_handler = InputHandler()
+        self.delta_time = 0
+        
+        self.player = Player()
+        self.entities = [self.player]
     
     def loop(self):
         while self.running:
+            self.delta_time = self.clock.tick(60) / 1000
             self.handle_events()
             self.process_input()
             self.update()
             self.render()
-            self.clock.tick(15)
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -26,17 +31,21 @@ class Game:
     def process_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
-            pass
+            command = self.input_handler.handle_input('up')
+            command.execute(self.player)
         elif keys[pygame.K_DOWN]:
-            pass
+            command = self.input_handler.handle_input('down')
+            command.execute(self.player)
         elif keys[pygame.K_LEFT]:
-            pass
+            command = self.input_handler.handle_input('left')
+            command.execute(self.player)
         elif keys[pygame.K_RIGHT]:
-            pass
+            command = self.input_handler.handle_input('right')
+            command.execute(self.player)
     
     def update(self):
         for entity in self.entities:
-            entity.update()
+            entity.update(self.delta_time)
     
     def render(self):
         self.display.fill("white")
