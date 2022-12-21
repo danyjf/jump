@@ -20,7 +20,7 @@ class Player:
             self.state = new_state
             self.state.enter()
         
-        self.velocity_x = 0
+        # self.velocity_x = 0
         if self.y > 576 - 32:
             self.y = 576 - 32
             self.velocity_y = 0
@@ -47,3 +47,10 @@ class Player:
     def is_on_ground(self):
         if self.y >= 576 - 32:
             return True
+    
+    def get_direction_x(self):
+        if self.velocity_x > 0:
+            return 1
+        elif self.velocity_x < 0:
+            return -1
+        return 0
