@@ -1,5 +1,7 @@
 ﻿import pygame
 
+from states import Idle, Walking
+
 class Player:
     def __init__(self, x, y, color):
         self.x = x
@@ -10,13 +12,15 @@ class Player:
         self.velocity_x = 0
         self.velocity_y = 0
         self.gravity = 600
+        self.state = Idle()
     
     def update(self, delta_time):
-        self.velocity_y += self.gravity * delta_time
-        self.x += self.velocity_x * delta_time
-        self.y += self.velocity_y * delta_time
-        self.velocity_x = 0
+        new_state = self.state.update(self, delta_time)
+        if new_state != None:
+            self.state = new_state
+            self.state.enter()
         
+        self.velocity_x = 0
         if self.y > 576 - 32:
             self.y = 576 - 32
             self.velocity_y = 0
@@ -39,3 +43,6 @@ class Player:
             self.velocity_x = 0
         else:
             self.velocity_x = self.movement_speed
+    
+    def move(self):
+        pass
