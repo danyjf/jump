@@ -44,5 +44,6 @@ class Player:
         else:
             self.velocity_x = self.movement_speed
     
-    def move(self):
-        pass
+    def is_on_ground(self):
+        if self.y >= 576 - 32:
+            return True
