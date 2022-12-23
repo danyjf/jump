@@ -1,7 +1,8 @@
 ﻿import pygame
 
-from player import Player
 from input_handler import InputHandler
+from player import Player
+from ground import Ground
 
 class Game:
     def __init__(self, width, height):
@@ -14,7 +15,11 @@ class Game:
         
         self.player1 = Player(100, 0, 'red')
         self.player2 = Player(892, 0, 'green')
-        self.entities = [self.player1, self.player2]
+        self.entities = [
+            self.player1, 
+            self.player2, 
+            Ground(0, 544)
+        ]
     
     def loop(self):
         while self.running:
@@ -55,6 +60,15 @@ class Game:
     def update(self):
         for entity in self.entities:
             entity.update(self.delta_time)
+        
+        self.player1.is_on_ground = False
+        self.player2.is_on_ground = False
+        for entity in self.entities:
+            if entity != self.player1 and entity != self.player2:
+                if entity.rect.colliderect(self.player1.rect):
+                    self.player1.collision(entity)
+                if entity.rect.colliderect(self.player2.rect):
+                    self.player2.collision(entity)
     
     def render(self):
         self.display.fill("white")

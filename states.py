@@ -22,7 +22,7 @@ class Idle(State):
             return Jumping()
         elif direction_x != 0:
             return Walking()
-        elif not player.is_on_ground():
+        elif not player.is_on_ground:
             return Falling()
 
 class Walking(State):
@@ -41,7 +41,7 @@ class Walking(State):
             return Jumping()
         elif direction_x == 0:
             return Idle()
-        elif not player.is_on_ground():
+        elif not player.is_on_ground:
             return Falling()
 
 class Jumping(State):
@@ -56,7 +56,7 @@ class Jumping(State):
         player.y += player.velocity_y * delta_time
         player.velocity_x = 0
         
-        if player.is_on_ground():
+        if player.is_on_ground:
             if direction_x == 0:
                 return Idle()
             else:
@@ -74,7 +74,7 @@ class Falling(State):
         player.y += player.velocity_y * delta_time
         player.velocity_x = 0
         
-        if player.is_on_ground():
+        if player.is_on_ground:
             if direction_x == 0:
                 return Idle()
             else:

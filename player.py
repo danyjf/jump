@@ -1,6 +1,7 @@
 ﻿import pygame
 
-from states import Idle, Walking
+from states import Idle
+from ground import Ground
 
 class Player:
     def __init__(self, x, y, color):
@@ -13,6 +14,8 @@ class Player:
         self.velocity_y = 0
         self.gravity = 600
         self.state = Idle()
+        self.rect = pygame.Rect(x, y, 32, 32)
+        self.is_on_ground = False
     
     def update(self, delta_time):
         new_state = self.state.update(self, delta_time)
@@ -20,13 +23,11 @@ class Player:
             self.state = new_state
             self.state.enter()
         
-        # self.velocity_x = 0
-        if self.y > 576 - 32:
-            self.y = 576 - 32
-            self.velocity_y = 0
-    
+        self.rect.x = self.x
+        self.rect.y = self.y
+            
     def render(self, display):
-        pygame.draw.rect(display, self.color, (self.x, self.y, 32, 32))
+        pygame.draw.rect(display, self.color, self.rect)
 
     def up(self):
         if self.velocity_y == 0:
@@ -44,13 +45,19 @@ class Player:
         else:
             self.velocity_x = self.movement_speed
     
-    def is_on_ground(self):
-        if self.y >= 576 - 32:
-            return True
-    
     def get_direction_x(self):
         if self.velocity_x > 0:
             return 1
         elif self.velocity_x < 0:
             return -1
         return 0
+    
+    def collision(self, entity):
+        if isinstance(entity, Ground):
+            self.rect.bottom = entity.rect.top
+
+            self.is_on_ground = True
+            if self.velocity_y < 0:
+                self.is_on_ground = False
+
+            self.velocity_y = 0
