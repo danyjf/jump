@@ -72,6 +72,7 @@ class Falling(State):
         player.velocity_y += player.gravity * delta_time
         player.x += player.velocity_x * delta_time
         player.y += player.velocity_y * delta_time
+        player.velocity_x = 0
         
         if player.is_on_ground():
             if direction_x == 0:
