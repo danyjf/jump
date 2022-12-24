@@ -2,6 +2,7 @@
 
 from states import Idle
 from ground import Ground
+from floating_platform import FloatingPlatform
 
 class Player:
     def __init__(self, x, y, color):
@@ -52,12 +53,11 @@ class Player:
             return -1
         return 0
     
-    def collision(self, entity):
-        if isinstance(entity, Ground):
-            self.rect.bottom = entity.rect.top
-
-            self.is_on_ground = True
+    def collision(self, other):
+        if isinstance(other, Ground) or isinstance(other, FloatingPlatform):
             if self.velocity_y < 0:
                 self.is_on_ground = False
-
-            self.velocity_y = 0
+            else:
+                self.rect.bottom = other.rect.top
+                self.is_on_ground = True
+                self.velocity_y = 0

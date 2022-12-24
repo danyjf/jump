@@ -3,6 +3,7 @@
 from input_handler import InputHandler
 from player import Player
 from ground import Ground
+from floating_platform import FloatingPlatform
 
 class Game:
     def __init__(self, width, height):
@@ -18,7 +19,8 @@ class Game:
         self.entities = [
             self.player1, 
             self.player2, 
-            Ground(0, 544)
+            Ground(0, 544),
+            FloatingPlatform(0, 450)
         ]
     
     def loop(self):
@@ -73,7 +75,7 @@ class Game:
     def render(self):
         self.display.fill("white")
         
-        for entity in self.entities:
-            entity.render(self.display)
+        for i in range(len(self.entities) - 1, -1, -1):
+            self.entities[i].render(self.display)
         
         pygame.display.flip()
