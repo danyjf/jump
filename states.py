@@ -32,9 +32,7 @@ class Walking(State):
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
         
-        player.x += player.velocity_x * delta_time
-        player.y += player.velocity_y * delta_time
-        player.velocity_y += player.gravity * delta_time
+        player.rect.x += round(player.velocity_x * delta_time)
         player.velocity_x = 0
         
         if player.velocity_y < 0:
@@ -52,8 +50,8 @@ class Jumping(State):
         direction_x = player.get_direction_x()
         
         player.velocity_y += player.gravity * delta_time
-        player.x += player.velocity_x * delta_time
-        player.y += player.velocity_y * delta_time
+        player.rect.x += round(player.velocity_x * delta_time)
+        player.rect.y += round(player.velocity_y * delta_time)
         player.velocity_x = 0
         
         if player.is_on_ground:
@@ -70,8 +68,8 @@ class Falling(State):
         direction_x = player.get_direction_x()
         
         player.velocity_y += player.gravity * delta_time
-        player.x += player.velocity_x * delta_time
-        player.y += player.velocity_y * delta_time
+        player.rect.x += round(player.velocity_x * delta_time)
+        player.rect.y += round(player.velocity_y * delta_time)
         player.velocity_x = 0
         
         if player.is_on_ground:

@@ -6,8 +6,6 @@ from floating_platform import FloatingPlatform
 
 class Player:
     def __init__(self, x, y, color):
-        self.x = x
-        self.y = y
         self.color = color
         self.movement_speed = 100
         self.jump_speed = -400
@@ -23,9 +21,6 @@ class Player:
         if new_state != None:
             self.state = new_state
             self.state.enter()
-        
-        self.rect.x = self.x
-        self.rect.y = self.y
             
     def render(self, display):
         pygame.draw.rect(display, self.color, self.rect)
@@ -58,6 +53,8 @@ class Player:
             if self.velocity_y < 0:
                 self.is_on_ground = False
             else:
-                self.rect.bottom = other.rect.top
+                # plus one because otherwise the rects dont overlap and the 
+                # collision is not detected
+                self.rect.bottom = other.rect.top + 1
                 self.is_on_ground = True
                 self.velocity_y = 0

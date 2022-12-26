@@ -48,6 +48,8 @@ class Game:
         if keys[pygame.K_d]:
             command = self.input_handler.handle_input('d')
             command.execute(self.player1)
+            # for entity in self.entities:
+            #     entity.rect.x -= self.player1.velocity_x * self.delta_time
         
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')

@@ -2,8 +2,6 @@
 
 class Ground:
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
         self.rect = pygame.Rect(x, y, 1024, 32)
 
     def update(self, delta_time):
