@@ -4,6 +4,7 @@ from input_handler import InputHandler
 from player import Player
 from ground import Ground
 from floating_platform import FloatingPlatform
+from camera import Camera
 
 class Game:
     def __init__(self, width, height):
@@ -16,6 +17,7 @@ class Game:
         
         self.player1 = Player(100, 0, 'red')
         self.player2 = Player(892, 0, 'green')
+        self.camera = Camera(self.player1, self.player2)
         self.entities = [
             self.player1, 
             self.player2, 
@@ -48,8 +50,6 @@ class Game:
         if keys[pygame.K_d]:
             command = self.input_handler.handle_input('d')
             command.execute(self.player1)
-            # for entity in self.entities:
-            #     entity.rect.x -= self.player1.velocity_x * self.delta_time
         
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')
@@ -73,6 +73,8 @@ class Game:
                     self.player1.collision(entity)
                 if entity.rect.colliderect(self.player2.rect):
                     self.player2.collision(entity)
+        
+        self.camera.update(self.entities)
     
     def render(self):
         self.display.fill("white")
