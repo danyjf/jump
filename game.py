@@ -16,13 +16,14 @@ class Game:
         self.input_handler = InputHandler()
         self.delta_time = 0
         
-        self.player1 = Player('Player1', 100, 0, 'red')
-        self.player2 = Player('Player2', 892, 0, 'green')
+        ground = Ground(0, 544)
+        self.player1 = Player('Player1', 100, 513, ground, 'red')
+        self.player2 = Player('Player2', 892, 513, ground, 'green')
         self.camera = Camera(self.player1, self.player2)
         self.entities = [
             self.player1, 
             self.player2, 
-            Ground(0, 544),
+            ground,
             FloatingPlatform(0, 450)
         ]
         self.ui = [
@@ -92,6 +93,6 @@ class Game:
         
         # render the ui on top
         for i in range(len(self.ui) - 1, -1, -1):
-            self.entities[i].render(self.display)
+            self.ui[i].render(self.display)
         
         pygame.display.flip()

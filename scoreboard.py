@@ -1,6 +1,7 @@
 ﻿import pygame
 
 from observer import Observer
+from events import EVENT_HEIGHT_CHANGE
 
 class ScoreBoard(Observer):
     def __init__(self, player1, player2):
@@ -10,14 +11,13 @@ class ScoreBoard(Observer):
         self.scoreboard_text = ScoreBoardText(self.scores)
 
     def render(self, display):
-        for player_name in self.score_board_text.text:
-            display.blit(self.score_board_text.text[player_name], self.score_board_text.text_rect[player_name])
+        for player_name in self.scoreboard_text.text:
+            display.blit(self.scoreboard_text.text[player_name], self.scoreboard_text.text_rect[player_name])
     
     def on_notify(self, entity, event):
-        # if event == Environment.EAT:
-        #     self.scores[entity.name] += 1
-        #     self.score_board_text.update_scores(self.scores)
-        print('here')
+        if event == EVENT_HEIGHT_CHANGE:
+            self.scores[entity.name] = entity.dist_from_ground
+            self.scoreboard_text.update_scores(self.scores)
 
 class ScoreBoardText:
     def __init__(self, scores):
