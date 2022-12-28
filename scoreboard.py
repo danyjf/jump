@@ -5,7 +5,7 @@ from events import EVENT_HEIGHT_CHANGE
 
 class ScoreBoard(Observer):
     def __init__(self, player1, player2):
-        self.scores = {player1.name: '', player2.name: ''}
+        self.scores = {player1.name: '0', player2.name: '0'}
         player1.add_observer(self)
         player2.add_observer(self)
         self.scoreboard_text = ScoreBoardText(self.scores)
