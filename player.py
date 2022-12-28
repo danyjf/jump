@@ -3,9 +3,12 @@
 from states import Idle
 from ground import Ground
 from floating_platform import FloatingPlatform
+from subject import Subject
 
-class Player:
-    def __init__(self, x, y, color):
+class Player(Subject):
+    def __init__(self, name, x, y, color):
+        super().__init__()
+        self.name = name
         self.color = color
         self.movement_speed = 100
         self.jump_speed = -400
