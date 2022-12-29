@@ -8,9 +8,6 @@ class Background:
         self.image = pygame.image.load("assets/sprites/sky.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (width, height))
     
-    def update(self, delta_time):
-        pass
-    
     def render(self, display):
         self.i += 0.5
 
