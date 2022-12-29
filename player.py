@@ -32,6 +32,9 @@ class Player(Subject):
         if new_dist_from_ground != self.dist_from_ground:
             self.dist_from_ground = new_dist_from_ground
             self.notify(self, EVENT_HEIGHT_CHANGE)
+        
+        if self.rect.y > 576:
+            print(f'{self.name} dead')
     
     def render(self, display):
         pygame.draw.rect(display, self.color, self.rect)

@@ -24,7 +24,8 @@ class Game:
             self.player1, 
             self.player2, 
             ground,
-            FloatingPlatform(0, 450)
+            FloatingPlatform(0, 450),
+            FloatingPlatform(0, 350)
         ]
         self.ui = [
             ScoreBoard(self.player1, self.player2)
