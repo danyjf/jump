@@ -1,4 +1,6 @@
-﻿import pygame
+﻿import random
+import pygame
+
 
 class FloatingPlatform:
     def __init__(self, x, y):

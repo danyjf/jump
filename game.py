@@ -6,6 +6,8 @@ from ground import Ground
 from floating_platform import FloatingPlatform
 from camera import Camera
 
+
+
 class Game:
     def __init__(self, width, height):
         self.display = pygame.display.set_mode((width, height))
@@ -14,19 +16,35 @@ class Game:
         self.running = True
         self.input_handler = InputHandler()
         self.delta_time = 0
+        self.i = 0
         
-        self.player1 = Player(100, 0, 'red')
+        
+        self.bg = pygame.image.load("sky.png")
+        self.bg = pygame.transform.scale(self.bg,(width,height))
+
+        self.player1 = Player(150, 0, 'red')
         self.player2 = Player(892, 0, 'green')
         self.camera = Camera(self.player1, self.player2)
         self.entities = [
             self.player1, 
             self.player2, 
-            Ground(0, 544),
-            FloatingPlatform(0, 450)
+            Ground(0, 150),
+            #FloatingPlatform(650, 15), FloatingPlatform(215, 15), FloatingPlatform(450, -100), FloatingPlatform(650, -215), FloatingPlatform(215, -215)
         ]
+        self.obstacles = [FloatingPlatform(650, 15), FloatingPlatform(215, 15), FloatingPlatform(450, -100), FloatingPlatform(650, -215), FloatingPlatform(215, -215)]
     
     def loop(self):
         while self.running:
+            self.i+=0.5
+            height=576
+            width=1024
+            self.display.fill((0,0,0))
+            self.display.blit(self.bg,(self.i,0))
+            self.display.blit(self.bg,(width+self.i,0))
+            if (self.i==-width):
+                self.display.blit(self.bg,(width+self.i,0))
+                self.i=0
+            self.i-=1
             self.delta_time = self.clock.tick(60) / 1000
             self.handle_events()
             self.process_input()
@@ -77,9 +95,16 @@ class Game:
         self.camera.update(self.entities)
     
     def render(self):
-        self.display.fill("white")
+        #self.display.fill("white")
+        
         
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
+
+        for i in range(len(self.obstacles) - 1, -1, -1):
+            self.obstacles[i].render(self.display)
+
+
+
         
         pygame.display.flip()
