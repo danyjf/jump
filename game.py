@@ -6,6 +6,7 @@ from ground import Ground
 from floating_platform import FloatingPlatform
 from camera import Camera
 from background import Background
+from scoreboard import ScoreBoard
 
 class Game:
     def __init__(self, width, height):
@@ -16,27 +17,24 @@ class Game:
         self.input_handler = InputHandler()
         self.delta_time = 0
         
-        self.player1 = Player(150, 0, 'red')
-        self.player2 = Player(892, 0, 'green')
+        ground = Ground(0, 544)
+        self.player1 = Player('Player1', 100, 513, ground, 'red')
+        self.player2 = Player('Player2', 892, 513, ground, 'green')
         self.camera = Camera(self.player1, self.player2)
         self.entities = [
             self.player1, 
             self.player2, 
-            Ground(0, 150),
-            FloatingPlatform(650, 15), 
-            FloatingPlatform(215, 15), 
-            FloatingPlatform(450, -100), 
-            FloatingPlatform(650, -215), 
-            FloatingPlatform(215, -215),
+            ground,
+            FloatingPlatform(650, 420), 
+            FloatingPlatform(215, 420), 
+            FloatingPlatform(450, 320), 
+            FloatingPlatform(650, 220), 
+            FloatingPlatform(215, 220),
             Background(width, height)
         ]
-        # self.obstacles = [
-        #     FloatingPlatform(650, 15), 
-        #     FloatingPlatform(215, 15), 
-        #     FloatingPlatform(450, -100), 
-        #     FloatingPlatform(650, -215), 
-        #     FloatingPlatform(215, -215)
-        # ]
+        self.ui = [
+            ScoreBoard(self.player1, self.player2)
+        ]
     
     def loop(self):
         while self.running:
@@ -75,9 +73,14 @@ class Game:
             command.execute(self.player2)
     
     def update(self):
+        # update the game objects
         for entity in self.entities:
             entity.update(self.delta_time)
         
+        # update the camera
+        self.camera.update(self.entities)
+        
+        # detect the collisions
         self.player1.is_on_ground = False
         self.player2.is_on_ground = False
         for entity in self.entities:
@@ -86,16 +89,16 @@ class Game:
                     self.player1.collision(entity)
                 if entity.rect.colliderect(self.player2.rect):
                     self.player2.collision(entity)
-        
-        self.camera.update(self.entities)
     
     def render(self):
         self.display.fill('white')
         
+        # render the game objects
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
 
-        # for i in range(len(self.obstacles) - 1, -1, -1):
-        #     self.obstacles[i].render(self.display)
+        # render the ui on top
+        for i in range(len(self.ui) - 1, -1, -1):
+            self.ui[i].render(self.display)
         
         pygame.display.flip()
