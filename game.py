@@ -23,10 +23,20 @@ class Game:
             self.player1, 
             self.player2, 
             Ground(0, 150),
-            #FloatingPlatform(650, 15), FloatingPlatform(215, 15), FloatingPlatform(450, -100), FloatingPlatform(650, -215), FloatingPlatform(215, -215)
+            FloatingPlatform(650, 15), 
+            FloatingPlatform(215, 15), 
+            FloatingPlatform(450, -100), 
+            FloatingPlatform(650, -215), 
+            FloatingPlatform(215, -215),
             Background(width, height)
         ]
-        self.obstacles = [FloatingPlatform(650, 15), FloatingPlatform(215, 15), FloatingPlatform(450, -100), FloatingPlatform(650, -215), FloatingPlatform(215, -215)]
+        # self.obstacles = [
+        #     FloatingPlatform(650, 15), 
+        #     FloatingPlatform(215, 15), 
+        #     FloatingPlatform(450, -100), 
+        #     FloatingPlatform(650, -215), 
+        #     FloatingPlatform(215, -215)
+        # ]
     
     def loop(self):
         while self.running:
@@ -85,7 +95,7 @@ class Game:
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
 
-        for i in range(len(self.obstacles) - 1, -1, -1):
-            self.obstacles[i].render(self.display)
+        # for i in range(len(self.obstacles) - 1, -1, -1):
+        #     self.obstacles[i].render(self.display)
         
         pygame.display.flip()
