@@ -3,9 +3,16 @@
 from states import Idle
 from ground import Ground
 from floating_platform import FloatingPlatform
+from subject import Subject
+from events import EVENT_HEIGHT_CHANGE
 
-class Player:
-    def __init__(self, x, y, color):
+class Player(Subject):
+    def __init__(self, name, x, y, ground, color):
+        super().__init__()
+        self.name = name
+        self.rect = pygame.Rect(x, y, 32, 32)
+        self.ground = ground
+        self.dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
         self.color = color
         self.movement_speed = 100
         self.jump_speed = -400
@@ -13,7 +20,6 @@ class Player:
         self.velocity_y = 0
         self.gravity = 600
         self.state = Idle()
-        self.rect = pygame.Rect(x, y, 32, 32)
         self.is_on_ground = False
     
     def update(self, delta_time):
@@ -21,7 +27,12 @@ class Player:
         if new_state != None:
             self.state = new_state
             self.state.enter()
-            
+        
+        new_dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
+        if new_dist_from_ground != self.dist_from_ground:
+            self.dist_from_ground = new_dist_from_ground
+            self.notify(self, EVENT_HEIGHT_CHANGE)
+    
     def render(self, display):
         pygame.draw.rect(display, self.color, self.rect)
 
