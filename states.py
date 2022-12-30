@@ -1,6 +1,7 @@
 ﻿import pygame
 from pygame import *
 
+
 class State:
     def __init__(self, name):
         self.name = name

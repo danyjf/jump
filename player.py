@@ -14,7 +14,7 @@ class Player(Subject, Sprite):
     def __init__(self, name, x, y, ground, color):
         super().__init__()
         Sprite.__init__(self)
-        self.image = pygame.image.load("mariostand.png").convert_alpha()
+        self.image = pygame.image.load("mariostand2.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (32,32))
         self.name = name
         self.rect = pygame.Rect(x, y, 32, 32)

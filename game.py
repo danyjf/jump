@@ -7,11 +7,18 @@ from floating_platform import FloatingPlatform
 from camera import Camera
 from background import Background
 from scoreboard import ScoreBoard
+from pygame.mixer import *
+
+
 
 class Game:
     def __init__(self, width, height):
         self.display = pygame.display.set_mode((width, height))
         self.clock = pygame.time.Clock()
+
+        pygame.mixer.init()
+        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.play(-1)
 
         self.running = True
         self.input_handler = InputHandler()
@@ -67,6 +74,7 @@ class Game:
         if keys[pygame.K_w]:
             command = self.input_handler.handle_input('w')
             command.execute(self.player1)
+            Sound("minijump.wav").play()
         if keys[pygame.K_a]:
             command = self.input_handler.handle_input('a')
             command.execute(self.player1)
@@ -77,6 +85,7 @@ class Game:
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')
             command.execute(self.player2)
+            Sound("minijump2.wav").play()
         if keys[pygame.K_LEFT]:
             command = self.input_handler.handle_input('left')
             command.execute(self.player2)
