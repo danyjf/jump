@@ -5,6 +5,7 @@ from player import Player
 from ground import Ground
 from floating_platform import FloatingPlatform
 from camera import Camera
+from background import Background
 from scoreboard import ScoreBoard
 
 class Game:
@@ -16,20 +17,36 @@ class Game:
         self.input_handler = InputHandler()
         self.delta_time = 0
         
+        # spawn platfrom variables
+        self.can_add_platforms = True
+        self.max_height = 0
+        
         ground = Ground(0, 544)
         self.player1 = Player('Player1', 100, 513, ground, 'red')
         self.player2 = Player('Player2', 892, 513, ground, 'green')
         self.camera = Camera(self.player1, self.player2)
-        self.entities = [
-            self.player1, 
-            self.player2, 
-            ground,
-            FloatingPlatform(0, 450)
-        ]
+        
         self.ui = [
             ScoreBoard(self.player1, self.player2)
         ]
+        self.entities = [
+            self.player1, 
+            self.player2, 
+
+            ground,
+            FloatingPlatform(215, 220),
+            FloatingPlatform(650, 220), 
+            FloatingPlatform(450, 320), 
+            FloatingPlatform(215, 420), 
+            FloatingPlatform(650, 420), 
+        ]
+        self.background = [
+            Background(width, height)
+        ]
     
+
+      
+
     def loop(self):
         while self.running:
             self.delta_time = self.clock.tick(60) / 1000
@@ -37,6 +54,7 @@ class Game:
             self.process_input()
             self.update()
             self.render()
+            
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -71,6 +89,16 @@ class Game:
         for entity in self.entities:
             entity.update(self.delta_time)
         
+        # create platforms
+        if self.player1.dist_from_ground > self.max_height:
+            self.max_height = self.player1.dist_from_ground
+        
+        if self.can_add_platforms and self.max_height % 100 >= 90:
+            self.entities.append(FloatingPlatform(0, -40))
+            self.can_add_platforms = False
+        elif self.max_height % 100 < 90:
+            self.can_add_platforms = True
+        
         # update the camera
         self.camera.update(self.entities)
         
@@ -78,19 +106,23 @@ class Game:
         self.player1.is_on_ground = False
         self.player2.is_on_ground = False
         for entity in self.entities:
-            if entity != self.player1 and entity != self.player2:
+            if isinstance(entity, Ground) or isinstance(entity, FloatingPlatform):
                 if entity.rect.colliderect(self.player1.rect):
                     self.player1.collision(entity)
                 if entity.rect.colliderect(self.player2.rect):
                     self.player2.collision(entity)
     
     def render(self):
-        self.display.fill("white")
+        self.display.fill('white')
+        
+        # render the background objects
+        for i in range(len(self.background) - 1, -1, -1):
+            self.background[i].render(self.display)
         
         # render the game objects
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
-        
+
         # render the ui on top
         for i in range(len(self.ui) - 1, -1, -1):
             self.ui[i].render(self.display)

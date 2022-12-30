@@ -1,18 +1,26 @@
 ﻿import pygame
-
+from pygame import *
+from pygame.sprite import *
 from states import Idle
+from input_handler import Left
+from input_handler import Right
 from ground import Ground
 from floating_platform import FloatingPlatform
 from subject import Subject
 from events import EVENT_HEIGHT_CHANGE
 
-class Player(Subject):
+
+class Player(Subject, Sprite):
     def __init__(self, name, x, y, ground, color):
         super().__init__()
+        Sprite.__init__(self)
+        self.image = pygame.image.load("mariostand.png").convert_alpha()
+        self.image = pygame.transform.scale(self.image, (32,32))
         self.name = name
         self.rect = pygame.Rect(x, y, 32, 32)
         self.ground = ground
         self.dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
+
         self.color = color
         self.movement_speed = 100
         self.jump_speed = -400
@@ -21,6 +29,7 @@ class Player(Subject):
         self.gravity = 600
         self.state = Idle()
         self.is_on_ground = False
+
     
     def update(self, delta_time):
         new_state = self.state.update(self, delta_time)
@@ -34,7 +43,7 @@ class Player(Subject):
             self.notify(self, EVENT_HEIGHT_CHANGE)
     
     def render(self, display):
-        pygame.draw.rect(display, self.color, self.rect)
+        display.blit(self.image, self.rect)
 
     def up(self):
         if self.velocity_y == 0:
@@ -59,6 +68,8 @@ class Player(Subject):
             return -1
         return 0
     
+    
+
     def collision(self, other):
         if isinstance(other, Ground) or isinstance(other, FloatingPlatform):
             if self.velocity_y < 0:
