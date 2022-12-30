@@ -9,6 +9,8 @@ from floating_platform import FloatingPlatform
 from subject import Subject
 from events import EVENT_HEIGHT_CHANGE
 
+width=1024
+height=576
 
 class Player(Subject, Sprite):
     def __init__(self, name, x, y, ground, color):
@@ -80,3 +82,14 @@ class Player(Subject, Sprite):
                 self.rect.bottom = other.rect.top + 1
                 self.is_on_ground = True
                 self.velocity_y = 0
+
+    def screen_limits(self):
+        # Keep player on the screen
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > width:
+            self.rect.right = width
+        if self.rect.top <= 0:
+            self.rect.top = 0
+        if self.rect.bottom >= height:
+            self.rect.bottom = height

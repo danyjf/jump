@@ -28,6 +28,9 @@ class Game:
         self.can_add_platforms = True
         self.max_height = 0
         
+        self.pl1_image = pygame.image.load("mariostand2.png").convert_alpha()
+        #self.image = pygame.transform.scale(self.image, (32,32))
+
         ground = Ground(0, 544)
         self.player1 = Player('Player1', 100, 513, ground, 'red')
         self.player2 = Player('Player2', 892, 513, ground, 'green')
@@ -61,6 +64,8 @@ class Game:
             self.process_input()
             self.update()
             self.render()
+            self.player1.screen_limits()
+            self.player2.screen_limits()
             
 
     def handle_events(self):
