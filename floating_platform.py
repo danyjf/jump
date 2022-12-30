@@ -1,6 +1,8 @@
 ﻿import pygame
+import random
 
 from platforms import Platform
+from settings import WIDTH, HEIGHT
 
 class FloatingPlatform(Platform):
     def __init__(self, x, y):
@@ -16,4 +18,4 @@ class FloatingPlatform(Platform):
         display.blit(self.image , self.rect)
     
     def clone(self):
-        return FloatingPlatform(0, -40)
+        return FloatingPlatform(random.randint(0, WIDTH - self.rect.width), -40)

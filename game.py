@@ -9,10 +9,11 @@ from background import Background
 from scoreboard import ScoreBoard
 from spawner import Spawner
 from platform_spawn_manager import PlatformSpawnManager
+from settings import WIDTH, HEIGHT
 
 class Game:
-    def __init__(self, width, height):
-        self.display = pygame.display.set_mode((width, height))
+    def __init__(self):
+        self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
 
         self.running = True
@@ -39,7 +40,7 @@ class Game:
             FloatingPlatform(650, 420), 
         ]
         self.background = [
-            Background(width, height)
+            Background(WIDTH, HEIGHT)
         ]
 
     def loop(self):
