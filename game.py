@@ -33,11 +33,12 @@ class Game:
             self.player2, 
             ground,
             PlatformSpawnManager(self.player1, self.player2),
-            FloatingPlatform(215, 220),
-            FloatingPlatform(650, 220), 
-            FloatingPlatform(450, 320), 
-            FloatingPlatform(215, 420), 
-            FloatingPlatform(650, 420), 
+            FloatingPlatform(0, WIDTH / 2 - 150, 190),
+            FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 190), 
+            FloatingPlatform(0, WIDTH - 150, 300), 
+            FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 300), 
+            FloatingPlatform(0, WIDTH - 150, 420), 
+            FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 420) 
         ]
         self.background = [
             Background(WIDTH, HEIGHT)

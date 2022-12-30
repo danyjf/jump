@@ -19,7 +19,7 @@ class Player(Subject, Sprite):
         self.dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
 
         self.color = color
-        self.movement_speed = 100
+        self.movement_speed = 200
         self.jump_speed = -400
         self.velocity_x = 0
         self.velocity_y = 0
