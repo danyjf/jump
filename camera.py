@@ -15,5 +15,4 @@ class Camera:
         
         diff_y = self.following_player.rect.y - self.y_offset
         for entity in entities:
-            if not isinstance(entity, Background):
-                entity.rect.y -= diff_y
+            entity.rect.y -= diff_y

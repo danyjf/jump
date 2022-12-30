@@ -2,13 +2,10 @@
 from pygame import *
 from pygame.sprite import *
 from states import Idle
-from input_handler import Left
-from input_handler import Right
 from ground import Ground
 from floating_platform import FloatingPlatform
 from subject import Subject
 from events import EVENT_HEIGHT_CHANGE
-
 
 class Player(Subject, Sprite):
     def __init__(self, name, x, y, ground, color):
@@ -29,10 +26,9 @@ class Player(Subject, Sprite):
         self.gravity = 600
         self.state = Idle()
         self.is_on_ground = False
-
     
-    def update(self, delta_time):
-        new_state = self.state.update(self, delta_time)
+    def update(self, game):
+        new_state = self.state.update(self, game.delta_time)
         if new_state != None:
             self.state = new_state
             self.state.enter()
@@ -67,8 +63,6 @@ class Player(Subject, Sprite):
         elif self.velocity_x < 0:
             return -1
         return 0
-    
-    
 
     def collision(self, other):
         if isinstance(other, Ground) or isinstance(other, FloatingPlatform):

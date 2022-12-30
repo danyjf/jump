@@ -7,6 +7,8 @@ from floating_platform import FloatingPlatform
 from camera import Camera
 from background import Background
 from scoreboard import ScoreBoard
+from spawner import Spawner
+from platform_spawn_manager import PlatformSpawnManager
 
 class Game:
     def __init__(self, width, height):
@@ -16,10 +18,6 @@ class Game:
         self.running = True
         self.input_handler = InputHandler()
         self.delta_time = 0
-        
-        # spawn platfrom variables
-        self.can_add_platforms = True
-        self.max_height = 0
         
         ground = Ground(0, 544)
         self.player1 = Player('Player1', 100, 513, ground, 'red')
@@ -32,8 +30,8 @@ class Game:
         self.entities = [
             self.player1, 
             self.player2, 
-
             ground,
+            PlatformSpawnManager(self.player1, self.player2),
             FloatingPlatform(215, 220),
             FloatingPlatform(650, 220), 
             FloatingPlatform(450, 320), 
@@ -43,9 +41,6 @@ class Game:
         self.background = [
             Background(width, height)
         ]
-    
-
-      
 
     def loop(self):
         while self.running:
@@ -54,7 +49,6 @@ class Game:
             self.process_input()
             self.update()
             self.render()
-            
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -87,17 +81,7 @@ class Game:
     def update(self):
         # update the game objects
         for entity in self.entities:
-            entity.update(self.delta_time)
-        
-        # create platforms
-        if self.player1.dist_from_ground > self.max_height:
-            self.max_height = self.player1.dist_from_ground
-        
-        if self.can_add_platforms and self.max_height % 100 >= 90:
-            self.entities.append(FloatingPlatform(0, -40))
-            self.can_add_platforms = False
-        elif self.max_height % 100 < 90:
-            self.can_add_platforms = True
+            entity.update(self)
         
         # update the camera
         self.camera.update(self.entities)
@@ -119,7 +103,7 @@ class Game:
         for i in range(len(self.background) - 1, -1, -1):
             self.background[i].render(self.display)
         
-        # render the game objects
+        # render the game objects on top
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
 

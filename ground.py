@@ -9,7 +9,7 @@ class Ground:
         self.image = pygame.image.load("ground.png").convert_alpha()
         #self.image = pygame.transform.scale(self.image, (1027,132))
 
-    def update(self, delta_time):
+    def update(self, game):
         pass
     
     def render(self, display):
