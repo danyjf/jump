@@ -32,6 +32,7 @@ class Game:
         self.entities = [
             self.player1, 
             self.player2, 
+
             ground,
             FloatingPlatform(215, 220),
             FloatingPlatform(650, 220), 
@@ -43,6 +44,9 @@ class Game:
             Background(width, height)
         ]
     
+
+      
+
     def loop(self):
         while self.running:
             self.delta_time = self.clock.tick(60) / 1000
@@ -50,6 +54,7 @@ class Game:
             self.process_input()
             self.update()
             self.render()
+            
 
     def handle_events(self):
         for event in pygame.event.get():
