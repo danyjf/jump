@@ -91,5 +91,4 @@ class Player(Subject, Sprite):
             self.rect.right = width
         if self.rect.top <= 0:
             self.rect.top = 0
-        if self.rect.bottom >= height:
-            self.rect.bottom = height
+        
