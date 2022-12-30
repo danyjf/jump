@@ -20,7 +20,7 @@ class Idle(State):
     
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
-        self.image = pygame.image.load("mariostand.png").convert_alpha()
+        self.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
         self.image = pygame.transform.scale(self.image, (32,32))
         
         if player.velocity_y < 0:
@@ -48,10 +48,10 @@ class Walking(State):
             return Falling()
 
         if direction_x == 1:
-            player.image = pygame.image.load("mariostand.png").convert_alpha()
+            player.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
             player.image = pygame.transform.scale(player.image, (32,32))
         elif direction_x == -1:
-            player.image = pygame.image.load("mariostand2.png").convert_alpha()
+            player.image = pygame.image.load("assets/sprites/mariostand2.png").convert_alpha()
             player.image = pygame.transform.scale(player.image, (32,32))
 
 class Jumping(State):
@@ -62,13 +62,11 @@ class Jumping(State):
         direction_x = player.get_direction_x()
         
         if direction_x == 1:
-            player.image = pygame.image.load("mariojump_r.png").convert_alpha()
+            player.image = pygame.image.load("assets/sprites/mariojump_r.png").convert_alpha()
             player.image = pygame.transform.scale(player.image, (32,32))
         elif direction_x == -1:
-            player.image = pygame.image.load("mariojump_l.png").convert_alpha()
+            player.image = pygame.image.load("assets/sprites/mariojump_l.png").convert_alpha()
             player.image = pygame.transform.scale(player.image, (32,32))
-
-
         
         player.velocity_y += player.gravity * delta_time
         player.rect.x += round(player.velocity_x * delta_time)
@@ -77,14 +75,13 @@ class Jumping(State):
         
         if player.is_on_ground:
             if direction_x == 0:
-                player.image = pygame.image.load("mariostand.png").convert_alpha()
+                player.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
                 player.image = pygame.transform.scale(player.image, (32,32))
                 return Idle()
             else:
-                player.image = pygame.image.load("mariostand.png").convert_alpha()
+                player.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
                 player.image = pygame.transform.scale(player.image, (32,32))
                 return Walking()
-                
 
 class Falling(State):
     def __init__(self):
