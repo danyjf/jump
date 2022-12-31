@@ -7,9 +7,9 @@ from floating_platform import FloatingPlatform
 from camera import Camera
 from background import Background
 from scoreboard import ScoreBoard
-from spawner import Spawner
 from platform_spawn_manager import PlatformSpawnManager
 from settings import WIDTH, HEIGHT
+from win_screen import WinScreen
 
 class Game:
     def __init__(self):
@@ -26,7 +26,8 @@ class Game:
         self.camera = Camera(self.player1, self.player2)
         
         self.ui = [
-            ScoreBoard(self.player1, self.player2)
+            ScoreBoard(self.player1, self.player2),
+            WinScreen(self.player1, self.player2)
         ]
         self.entities = [
             self.player1, 
@@ -85,9 +86,6 @@ class Game:
         for entity in self.entities:
             entity.update(self)
         
-        # update the camera
-        self.camera.update(self.entities)
-        
         # detect the collisions
         self.player1.is_on_ground = False
         self.player2.is_on_ground = False
@@ -97,6 +95,9 @@ class Game:
                     self.player1.collision(entity)
                 if entity.rect.colliderect(self.player2.rect):
                     self.player2.collision(entity)
+        
+        # update the camera
+        self.camera.update(self.entities)
     
     def render(self):
         self.display.fill('white')
