@@ -66,7 +66,6 @@ class Game:
         if keys[pygame.K_w]:
             command = self.input_handler.handle_input('w')
             command.execute(self.player1)
-            pygame.mixer.Sound("minijump.wav").play()
         if keys[pygame.K_a]:
             command = self.input_handler.handle_input('a')
             command.execute(self.player1)
@@ -77,7 +76,6 @@ class Game:
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')
             command.execute(self.player2)
-            pygame.mixer.Sound("minijump2.wav").play()
         if keys[pygame.K_LEFT]:
             command = self.input_handler.handle_input('left')
             command.execute(self.player2)

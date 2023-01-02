@@ -9,6 +9,7 @@ from floating_platform import FloatingPlatform
 from subject import Subject
 from events import EVENT_HEIGHT_CHANGE
 from player_sprite import PlayerSprite
+from player_sound import PlayerSound
 
 width=1024
 height=576
@@ -17,6 +18,7 @@ class Player(Subject, Sprite):
     def __init__(self, name, x, y, ground):
         super().__init__()
         self.player_sprite = PlayerSprite()
+        self.player_sound = PlayerSound()
         self.name = name
         self.rect = pygame.Rect(x, y, 32, 32)
         self.ground = ground

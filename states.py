@@ -1,4 +1,4 @@
-﻿import pygame
+﻿import random
 
 class State:
     def __init__(self, name):
@@ -61,6 +61,7 @@ class Jumping(State):
     
     def enter(self, player):
         player.player_sprite.display_image = player.player_sprite.jump_image
+        player.player_sound.jump_sounds[random.randint(0, 1)].play()
     
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
