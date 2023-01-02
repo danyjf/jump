@@ -5,6 +5,7 @@ from platforms import Platform
 
 class FloatingPlatform(Platform):
     def __init__(self, x_min, x_max, y):
+        # initialize the platform to a random x value between the x_min and x_max
         super().__init__(random.randint(x_min, x_max), y, 150, 32)
         self.x_min = x_min
         self.x_max = x_max

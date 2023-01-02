@@ -27,10 +27,12 @@ class Game:
         self.player2 = Player('Player2', 892, 513, ground)
         self.camera = Camera(self.player1, self.player2)
         
+        # add ui elements always displayed on top
         self.ui = [
             ScoreBoard(self.player1, self.player2),
             WinScreen(self.player1, self.player2)
         ]
+        # add gameplay elements
         self.entities = [
             self.player1, 
             self.player2, 
@@ -43,6 +45,7 @@ class Game:
             FloatingPlatform(0, WIDTH - 150, 420), 
             FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 420) 
         ]
+        # add background elements alway displayed behind everything
         self.background = [
             Background(WIDTH, HEIGHT)
         ]
@@ -63,6 +66,7 @@ class Game:
     def process_input(self):
         keys = pygame.key.get_pressed()
         
+        # handle input for player 1
         if keys[pygame.K_w]:
             command = self.input_handler.handle_input('w')
             command.execute(self.player1)
@@ -73,6 +77,7 @@ class Game:
             command = self.input_handler.handle_input('d')
             command.execute(self.player1)
         
+        # handle input for player 2
         if keys[pygame.K_UP]:
             command = self.input_handler.handle_input('up')
             command.execute(self.player2)
@@ -84,11 +89,11 @@ class Game:
             command.execute(self.player2)
     
     def update(self):
-        # update the game objects
+        # update the game entities
         for entity in self.entities:
             entity.update(self)
         
-        # detect the collisions
+        # detect the collisions of the platforms with the players
         self.player1.is_on_ground = False
         self.player2.is_on_ground = False
         for entity in self.entities:
@@ -104,15 +109,15 @@ class Game:
     def render(self):
         self.display.fill('white')
         
-        # render the background objects
+        # render the background objects in reverse order
         for i in range(len(self.background) - 1, -1, -1):
             self.background[i].render(self.display)
         
-        # render the game objects on top
+        # render the game objects on top in reverse order
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
 
-        # render the ui on top
+        # render the ui on top in reverse order
         for i in range(len(self.ui) - 1, -1, -1):
             self.ui[i].render(self.display)
         

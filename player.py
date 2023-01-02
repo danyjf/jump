@@ -34,11 +34,14 @@ class Player(Entity, Subject):
             self.state = new_state
             self.state.enter(self)
         
+        # find the distance from the ground
         new_dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
+        # if the distance changes the notify the observers
         if new_dist_from_ground != self.dist_from_ground:
             self.dist_from_ground = new_dist_from_ground
             self.notify(self, EVENT_HEIGHT_CHANGE)
         
+        # handle the player hitting the limits of the screen
         self.screen_limits()
     
     def render(self, display):
@@ -52,12 +55,14 @@ class Player(Entity, Subject):
             self.velocity_y = self.jump_speed
     
     def left(self):
+        # if the player is also pressing right then stop
         if self.velocity_x == self.movement_speed:
             self.velocity_x = 0
         else:
             self.velocity_x = -self.movement_speed
     
     def right(self):
+        # if the player is also pressing left then stop
         if self.velocity_x == -self.movement_speed:
             self.velocity_x = 0
         else:
@@ -87,6 +92,7 @@ class Player(Entity, Subject):
             self.rect.left = 0
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
+        
+        # if the player goes under the screen then notify the observers
         if self.rect.y > HEIGHT:
             self.notify(self, EVENT_DEATH)
-    

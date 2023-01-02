@@ -1,6 +1,4 @@
-﻿import pygame
-
-from spawner import Spawner
+﻿from spawner import Spawner
 from floating_platform import FloatingPlatform
 from settings import WIDTH
 from entity import Entity
@@ -17,10 +15,13 @@ class PlatformSpawnManager(Entity):
         self.platform_right = FloatingPlatform(WIDTH / 2, WIDTH - 150, -40)
     
     def update(self, game):
+        # update the max height reached by the players
         if max(self.player1.dist_from_ground, self.player2.dist_from_ground) > self.max_height:
             self.max_height = max(self.player1.dist_from_ground, self.player2.dist_from_ground)
         
+        # when the maximum height of the players increases by more than 90 add a new platform
         if self.can_add_platforms and self.max_height % 100 >= 90:
+            # create a platform on a random x position of the left and right sides of the screen
             game.entities.append(self.spawner.spawn_platform(self.platform_left))
             game.entities.append(self.spawner.spawn_platform(self.platform_right))
             self.can_add_platforms = False

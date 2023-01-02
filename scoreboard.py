@@ -15,6 +15,7 @@ class ScoreBoard(Observer):
             display.blit(self.scoreboard_text.text[player_name], self.scoreboard_text.text_rect[player_name])
     
     def on_notify(self, entity, event):
+        # when the height of a player changes update its score
         if event == EVENT_HEIGHT_CHANGE:
             self.scores[entity.name] = entity.dist_from_ground
             self.scoreboard_text.update_scores(self.scores)
