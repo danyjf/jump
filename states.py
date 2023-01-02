@@ -1,27 +1,27 @@
-﻿import pygame
-from pygame import *
+﻿import random
 
 class State:
     def __init__(self, name):
         self.name = name
     
-    def enter(self):
+    def enter(self, player):
         print(f'Entering {self.name}')
     
     def update(self, player, delta_time):
         pass
     
-    def exit(self):
+    def exit(self, player):
         pass
 
 class Idle(State):
     def __init__(self):
         super().__init__(self.__class__.__name__)
     
+    def enter(self, player):
+        player.player_sprite.display_image = player.player_sprite.idle_image
+    
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
-        self.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (32,32))
         
         if player.velocity_y < 0:
             return Jumping()
@@ -34,8 +34,16 @@ class Walking(State):
     def __init__(self):
         super().__init__(self.__class__.__name__)
     
+    def enter(self, player):
+        player.player_sprite.display_image = player.player_sprite.walk_image
+    
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
+        
+        if direction_x == 1:
+            player.player_sprite.flip_image = False
+        elif direction_x == -1:
+            player.player_sprite.flip_image = True
         
         player.rect.x += round(player.velocity_x * delta_time)
         player.velocity_x = 0
@@ -47,26 +55,21 @@ class Walking(State):
         elif not player.is_on_ground:
             return Falling()
 
-        if direction_x == 1:
-            player.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
-            player.image = pygame.transform.scale(player.image, (32,32))
-        elif direction_x == -1:
-            player.image = pygame.image.load("assets/sprites/mariostand2.png").convert_alpha()
-            player.image = pygame.transform.scale(player.image, (32,32))
-
 class Jumping(State):
     def __init__(self):
         super().__init__(self.__class__.__name__)
+    
+    def enter(self, player):
+        player.player_sprite.display_image = player.player_sprite.jump_image
+        player.player_sound.jump_sounds[random.randint(0, 1)].play()
     
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
         
         if direction_x == 1:
-            player.image = pygame.image.load("assets/sprites/mariojump_r.png").convert_alpha()
-            player.image = pygame.transform.scale(player.image, (32,32))
+            player.player_sprite.flip_image = False
         elif direction_x == -1:
-            player.image = pygame.image.load("assets/sprites/mariojump_l.png").convert_alpha()
-            player.image = pygame.transform.scale(player.image, (32,32))
+            player.player_sprite.flip_image = True
         
         player.velocity_y += player.gravity * delta_time
         player.rect.x += round(player.velocity_x * delta_time)
@@ -75,20 +78,24 @@ class Jumping(State):
         
         if player.is_on_ground:
             if direction_x == 0:
-                player.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
-                player.image = pygame.transform.scale(player.image, (32,32))
                 return Idle()
             else:
-                player.image = pygame.image.load("assets/sprites/mariostand.png").convert_alpha()
-                player.image = pygame.transform.scale(player.image, (32,32))
                 return Walking()
 
 class Falling(State):
     def __init__(self):
         super().__init__(self.__class__.__name__)
     
+    def enter(self, player):
+        player.player_sprite.display_image = player.player_sprite.fall_image
+    
     def update(self, player, delta_time):
         direction_x = player.get_direction_x()
+        
+        if direction_x == 1:
+            player.player_sprite.flip_image = False
+        elif direction_x == -1:
+            player.player_sprite.flip_image = True
         
         player.velocity_y += player.gravity * delta_time
         player.rect.x += round(player.velocity_x * delta_time)
