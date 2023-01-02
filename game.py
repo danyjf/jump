@@ -25,12 +25,9 @@ class Game:
         self.can_add_platforms = True
         self.max_height = 0
         
-        self.pl1_image = pygame.image.load("mariostand2.png").convert_alpha()
-        #self.image = pygame.transform.scale(self.image, (32,32))
-
         ground = Ground(0, 544)
-        self.player1 = Player('Player1', 100, 513, ground, 'red')
-        self.player2 = Player('Player2', 892, 513, ground, 'green')
+        self.player1 = Player('Player1', 100, 513, ground)
+        self.player2 = Player('Player2', 892, 513, ground)
         self.camera = Camera(self.player1, self.player2)
         
         self.ui = [

@@ -8,30 +8,19 @@ from ground import Ground
 from floating_platform import FloatingPlatform
 from subject import Subject
 from events import EVENT_HEIGHT_CHANGE
+from player_sprite import PlayerSprite
 
 width=1024
 height=576
 
 class Player(Subject, Sprite):
-    def __init__(self, name, x, y, ground, color):
+    def __init__(self, name, x, y, ground):
         super().__init__()
-        Sprite.__init__(self)
-        self.idle_image = pygame.image.load("mariostand.png").convert_alpha()
-        self.idle_image = pygame.transform.scale(self.idle_image, (32,32))
-        self.walk_image = pygame.image.load("mariostand.png").convert_alpha()
-        self.walk_image = pygame.transform.scale(self.walk_image, (32,32))
-        self.jump_image = pygame.image.load("mariojump_r.png").convert_alpha()
-        self.jump_image = pygame.transform.scale(self.jump_image, (32,32))
-        self.fall_image = pygame.image.load("mariojump_r.png").convert_alpha()
-        self.fall_image = pygame.transform.scale(self.jump_image, (32,32))
-        self.display_image = None
-        self.flip_image = False
+        self.player_sprite = PlayerSprite()
         self.name = name
         self.rect = pygame.Rect(x, y, 32, 32)
         self.ground = ground
         self.dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
-
-        self.color = color
         self.movement_speed = 100
         self.jump_speed = -400
         self.velocity_x = 0
@@ -55,10 +44,10 @@ class Player(Subject, Sprite):
         self.screen_limits()
     
     def render(self, display):
-        if not self.flip_image:
-            display.blit(self.display_image, self.rect)
+        if not self.player_sprite.flip_image:
+            display.blit(self.player_sprite.display_image, self.rect)
         else:
-            display.blit(pygame.transform.flip(self.display_image, True, False), self.rect)
+            display.blit(pygame.transform.flip(self.player_sprite.display_image, True, False), self.rect)
 
     def up(self):
         if self.velocity_y == 0:
