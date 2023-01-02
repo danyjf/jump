@@ -1,6 +1,6 @@
 ﻿import pygame
-from pygame import *
-from pygame.sprite import *
+
+from entity import Entity
 from states import Idle
 from ground import Ground
 from floating_platform import FloatingPlatform
@@ -10,13 +10,13 @@ from settings import WIDTH, HEIGHT
 from player_sprite import PlayerSprite
 from player_sound import PlayerSound
 
-class Player(Subject):
+class Player(Entity, Subject):
     def __init__(self, name, x, y, ground):
-        super().__init__()
+        Entity.__init__(self, x, y, 32, 32)
+        Subject.__init__(self)
         self.player_sprite = PlayerSprite()
         self.player_sound = PlayerSound()
         self.name = name
-        self.rect = pygame.Rect(x, y, 32, 32)
         self.ground = ground
         self.dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
         self.movement_speed = 200

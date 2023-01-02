@@ -16,13 +16,11 @@ class Game:
         self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
 
-        pygame.mixer.init()
+        self.running = True
+        self.delta_time = 0
+        self.input_handler = InputHandler()
         pygame.mixer.music.load('assets/sounds/music.mp3')
         pygame.mixer.music.play(-1)
-
-        self.running = True
-        self.input_handler = InputHandler()
-        self.delta_time = 0
         
         ground = Ground(0, 544)
         self.player1 = Player('Player1', 100, 513, ground)

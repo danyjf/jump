@@ -1,13 +1,13 @@
 ﻿import pygame
-import random
 
 from spawner import Spawner
 from floating_platform import FloatingPlatform
 from settings import WIDTH
+from entity import Entity
 
-class PlatformSpawnManager:
+class PlatformSpawnManager(Entity):
     def __init__(self, player1, player2):
-        self.rect = pygame.Rect(0, 0, 0, 0)
+        super().__init__(0, 0, 0, 0)
         self.player1 = player1
         self.player2 = player2
         self.max_height = 0
@@ -26,6 +26,3 @@ class PlatformSpawnManager:
             self.can_add_platforms = False
         elif self.max_height % 100 < 90:
             self.can_add_platforms = True
-    
-    def render(self, display):
-        pass
