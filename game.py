@@ -7,23 +7,22 @@ from floating_platform import FloatingPlatform
 from camera import Camera
 from background import Background
 from scoreboard import ScoreBoard
+from platform_spawn_manager import PlatformSpawnManager
+from settings import WIDTH, HEIGHT
+from win_screen import WinScreen
 
 class Game:
-    def __init__(self, width, height):
-        self.display = pygame.display.set_mode((width, height))
+    def __init__(self):
+        self.display = pygame.display.set_mode((WIDTH, HEIGHT))
         self.clock = pygame.time.Clock()
 
         pygame.mixer.init()
-        pygame.mixer.music.load('music.mp3')
+        pygame.mixer.music.load('assets/sounds/music.mp3')
         pygame.mixer.music.play(-1)
 
         self.running = True
         self.input_handler = InputHandler()
         self.delta_time = 0
-        
-        # spawn platfrom variables
-        self.can_add_platforms = True
-        self.max_height = 0
         
         ground = Ground(0, 544)
         self.player1 = Player('Player1', 100, 513, ground)
@@ -31,20 +30,23 @@ class Game:
         self.camera = Camera(self.player1, self.player2)
         
         self.ui = [
-            ScoreBoard(self.player1, self.player2)
+            ScoreBoard(self.player1, self.player2),
+            WinScreen(self.player1, self.player2)
         ]
         self.entities = [
             self.player1, 
             self.player2, 
             ground,
-            FloatingPlatform(215, 220),
-            FloatingPlatform(650, 220), 
-            FloatingPlatform(450, 320), 
-            FloatingPlatform(215, 420), 
-            FloatingPlatform(650, 420), 
+            PlatformSpawnManager(self.player1, self.player2),
+            FloatingPlatform(0, WIDTH / 2 - 150, 190),
+            FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 190), 
+            FloatingPlatform(0, WIDTH - 150, 300), 
+            FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 300), 
+            FloatingPlatform(0, WIDTH - 150, 420), 
+            FloatingPlatform(WIDTH / 2 - 150, WIDTH - 150, 420) 
         ]
         self.background = [
-            Background(width, height)
+            Background(WIDTH, HEIGHT)
         ]
 
     def loop(self):
@@ -86,20 +88,7 @@ class Game:
     def update(self):
         # update the game objects
         for entity in self.entities:
-            entity.update(self.delta_time)
-        
-        # create platforms
-        if self.player1.dist_from_ground > self.max_height:
-            self.max_height = self.player1.dist_from_ground
-        
-        if self.can_add_platforms and self.max_height % 100 >= 90:
-            self.entities.append(FloatingPlatform(0, -40))
-            self.can_add_platforms = False
-        elif self.max_height % 100 < 90:
-            self.can_add_platforms = True
-        
-        # update the camera
-        self.camera.update(self.entities)
+            entity.update(self)
         
         # detect the collisions
         self.player1.is_on_ground = False
@@ -110,6 +99,9 @@ class Game:
                     self.player1.collision(entity)
                 if entity.rect.colliderect(self.player2.rect):
                     self.player2.collision(entity)
+        
+        # update the camera
+        self.camera.update(self.entities)
     
     def render(self):
         self.display.fill('white')
@@ -118,7 +110,7 @@ class Game:
         for i in range(len(self.background) - 1, -1, -1):
             self.background[i].render(self.display)
         
-        # render the game objects
+        # render the game objects on top
         for i in range(len(self.entities) - 1, -1, -1):
             self.entities[i].render(self.display)
 

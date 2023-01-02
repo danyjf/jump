@@ -2,19 +2,15 @@
 from pygame import *
 from pygame.sprite import *
 from states import Idle
-from input_handler import Left
-from input_handler import Right
 from ground import Ground
 from floating_platform import FloatingPlatform
 from subject import Subject
-from events import EVENT_HEIGHT_CHANGE
+from events import EVENT_HEIGHT_CHANGE, EVENT_DEATH
+from settings import WIDTH, HEIGHT
 from player_sprite import PlayerSprite
 from player_sound import PlayerSound
 
-width=1024
-height=576
-
-class Player(Subject, Sprite):
+class Player(Subject):
     def __init__(self, name, x, y, ground):
         super().__init__()
         self.player_sprite = PlayerSprite()
@@ -23,7 +19,7 @@ class Player(Subject, Sprite):
         self.rect = pygame.Rect(x, y, 32, 32)
         self.ground = ground
         self.dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
-        self.movement_speed = 100
+        self.movement_speed = 200
         self.jump_speed = -400
         self.velocity_x = 0
         self.velocity_y = 0
@@ -32,8 +28,8 @@ class Player(Subject, Sprite):
         self.state.enter(self)
         self.is_on_ground = False
     
-    def update(self, delta_time):
-        new_state = self.state.update(self, delta_time)
+    def update(self, game):
+        new_state = self.state.update(self, game.delta_time)
         if new_state != None:
             self.state = new_state
             self.state.enter(self)
@@ -86,11 +82,11 @@ class Player(Subject, Sprite):
                 self.velocity_y = 0
 
     def screen_limits(self):
-        # Keep player on the screen
+        # keep player on the screen
         if self.rect.left < 0:
             self.rect.left = 0
-        if self.rect.right > width:
-            self.rect.right = width
-        if self.rect.top <= 0:
-            self.rect.top = 0
+        if self.rect.right > WIDTH:
+            self.rect.right = WIDTH
+        if self.rect.y > HEIGHT:
+            self.notify(self, EVENT_DEATH)
     

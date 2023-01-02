@@ -2,4 +2,4 @@
 
 class PlayerSound:
     def __init__(self):
-        self.jump_sounds = [pygame.mixer.Sound("minijump.wav"), pygame.mixer.Sound("minijump2.wav")]
+        self.jump_sounds = [pygame.mixer.Sound("assets/sounds/minijump.wav"), pygame.mixer.Sound("assets/sounds/minijump2.wav")]
