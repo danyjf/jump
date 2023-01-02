@@ -16,8 +16,16 @@ class Player(Subject, Sprite):
     def __init__(self, name, x, y, ground, color):
         super().__init__()
         Sprite.__init__(self)
-        self.image = pygame.image.load("mariostand2.png").convert_alpha()
-        self.image = pygame.transform.scale(self.image, (32,32))
+        self.idle_image = pygame.image.load("mariostand.png").convert_alpha()
+        self.idle_image = pygame.transform.scale(self.idle_image, (32,32))
+        self.walk_image = pygame.image.load("mariostand.png").convert_alpha()
+        self.walk_image = pygame.transform.scale(self.walk_image, (32,32))
+        self.jump_image = pygame.image.load("mariojump_r.png").convert_alpha()
+        self.jump_image = pygame.transform.scale(self.jump_image, (32,32))
+        self.fall_image = pygame.image.load("mariojump_r.png").convert_alpha()
+        self.fall_image = pygame.transform.scale(self.jump_image, (32,32))
+        self.display_image = None
+        self.flip_image = False
         self.name = name
         self.rect = pygame.Rect(x, y, 32, 32)
         self.ground = ground
@@ -30,22 +38,27 @@ class Player(Subject, Sprite):
         self.velocity_y = 0
         self.gravity = 600
         self.state = Idle()
+        self.state.enter(self)
         self.is_on_ground = False
-
     
     def update(self, delta_time):
         new_state = self.state.update(self, delta_time)
         if new_state != None:
             self.state = new_state
-            self.state.enter()
+            self.state.enter(self)
         
         new_dist_from_ground = self.ground.rect.top - (self.rect.bottom - 1)
         if new_dist_from_ground != self.dist_from_ground:
             self.dist_from_ground = new_dist_from_ground
             self.notify(self, EVENT_HEIGHT_CHANGE)
+        
+        self.screen_limits()
     
     def render(self, display):
-        display.blit(self.image, self.rect)
+        if not self.flip_image:
+            display.blit(self.display_image, self.rect)
+        else:
+            display.blit(pygame.transform.flip(self.display_image, True, False), self.rect)
 
     def up(self):
         if self.velocity_y == 0:
@@ -70,8 +83,6 @@ class Player(Subject, Sprite):
             return -1
         return 0
     
-    
-
     def collision(self, other):
         if isinstance(other, Ground) or isinstance(other, FloatingPlatform):
             if self.velocity_y < 0:
@@ -91,4 +102,4 @@ class Player(Subject, Sprite):
             self.rect.right = width
         if self.rect.top <= 0:
             self.rect.top = 0
-        
+    
